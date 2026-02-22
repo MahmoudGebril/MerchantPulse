@@ -1,17 +1,15 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
-  IonNote,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
   IonSpinner,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../services/api.service';
 import type { Product } from '../../../models';
 
@@ -25,17 +23,15 @@ import type { Product } from '../../../models';
     IonToolbar,
     IonTitle,
     IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
     IonSpinner,
-    IonNote,
+    IonIcon,
   ],
   templateUrl: './products-list.page.html',
   styleUrl: './products-list.page.scss',
 })
 export class ProductsListPage {
   private readonly api = inject(ApiService);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly _products = signal<Product[]>([]);
   private readonly _loading = signal(true);
@@ -46,7 +42,7 @@ export class ProductsListPage {
   readonly error = this._error.asReadonly();
 
   ngOnInit(): void {
-    this.api.getProducts().subscribe({
+    this.api.getProducts().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this._products.set(res.data);
         this._loading.set(false);

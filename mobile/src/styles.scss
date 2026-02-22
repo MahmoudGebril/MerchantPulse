@@ -9,37 +9,141 @@
 @import '@ionic/angular/css/text-transformation.css';
 @import '@ionic/angular/css/flex-utils.css';
 
-/* MerchantPulse - White-label theme variables (overridden by ThemeService) */
+/* MerchantPulse - Design System */
 :root {
-  --brand-primary: #4F46E5;
-  --brand-accent: #7C3AED;
+  --brand-primary: #6366f1;
+  --brand-primary-rgb: 99, 102, 241;
+  --brand-accent: #818cf8;
   --brand-logo-url: none;
   --store-name: 'MerchantPulse';
-  --ion-font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ion-font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Light theme */
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-surface-elevated: #ffffff;
+  --app-text: #0f172a;
+  --app-text-secondary: #64748b;
+  --app-border: #e2e8f0;
+  --app-shadow: rgba(15, 23, 42, 0.06);
+  --app-shadow-strong: rgba(15, 23, 42, 0.12);
 }
 
 [data-theme='dark'] {
-  --ion-background-color: #0f0f12;
-  --ion-text-color: #e4e4e7;
-  --ion-color-step-50: #18181b;
-  --ion-color-step-100: #27272a;
-  --ion-color-step-200: #3f3f46;
-  --ion-color-step-300: #52525b;
-  --ion-color-step-400: #71717a;
-  --ion-color-step-500: #a1a1aa;
-  --ion-color-step-600: #d4d4d8;
-  --ion-color-step-700: #e4e4e7;
-  --ion-color-step-800: #f4f4f5;
-  --ion-color-step-900: #fafafa;
+  --ion-background-color: #0c0f14;
+  --ion-text-color: #f1f5f9;
+  --app-bg: #0c0f14;
+  --app-surface: #141922;
+  --app-surface-elevated: #1a1f2e;
+  --app-text: #f1f5f9;
+  --app-text-secondary: #94a3b8;
+  --app-border: #1e293b;
+  --app-shadow: rgba(0, 0, 0, 0.3);
+  --app-shadow-strong: rgba(0, 0, 0, 0.5);
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
   font-family: var(--ion-font-family);
   margin: 0;
   padding: 0;
   height: 100%;
+  background: var(--app-bg);
+  overflow-x: hidden;
+}
+
+/* Ionic overrides */
+ion-content {
+  --background: var(--app-bg);
+  --padding-top: env(safe-area-inset-top);
+  --padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+ion-toolbar {
+  --background: var(--app-surface);
+  --border-width: 0 0 1px 0;
+  --border-color: var(--app-border);
+  --min-height: 56px;
+  --padding-top: env(safe-area-inset-top);
+}
+
+ion-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--app-text);
+}
+
+ion-tab-bar {
+  --background: var(--app-surface);
+  border-top: 1px solid var(--app-border);
+  padding-bottom: env(safe-area-inset-bottom);
+  min-height: 56px;
+}
+
+ion-tab-button.tab-selected ion-icon {
+  color: var(--brand-primary);
+}
+
+ion-tab-button.tab-selected ion-label {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-input,
+ion-toggle {
+  --background: var(--app-bg);
+}
+
+/* Shared components */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  gap: 1rem;
+  color: var(--app-text-secondary);
+  font-size: 0.9375rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--app-text-secondary);
+  font-size: 0.9375rem;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--app-text);
+  }
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 8px;
+  margin: 1rem 1.25rem;
 }

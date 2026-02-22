@@ -5,9 +5,6 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
   IonToggle,
 } from '@ionic/angular/standalone';
 import { ThemeService } from '../../../theme/services/theme.service';
@@ -22,9 +19,6 @@ import { AuthService } from '../../../auth/services/auth.service';
     IonToolbar,
     IonTitle,
     IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
     IonToggle,
   ],
   templateUrl: './settings.page.html',

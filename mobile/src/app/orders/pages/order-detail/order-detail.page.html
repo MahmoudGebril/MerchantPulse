@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/orders"></ion-back-button>
@@ -7,29 +7,57 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (order()) {
-    <div class="order-detail">
-      <p><strong>Status:</strong> {{ order()!.status }}</p>
-      <p><strong>Date:</strong> {{ formatDate(order()!.createdAt) }}</p>
-      @if (order()!.customer) {
-        <p><strong>Customer:</strong> {{ order()!.customer?.name }}</p>
-      }
-      <p><strong>Subtotal:</strong> {{ order()!.subtotal | currency }}</p>
-      <p><strong>Discount:</strong> {{ order()!.discountAmount | currency }}</p>
-      <p><strong>Total:</strong> {{ order()!.totalAmount | currency }}</p>
+    <div class="detail-content">
+      <div class="detail-header">
+        <span class="order-id">#{{ order()!.id.slice(0, 8) }}</span>
+        <span class="order-status-badge" [class]="'status-' + statusColor(order()!.status)">{{ order()!.status }}</span>
+      </div>
 
-      @if (order()!.orderItems?.length) {
-        <h3>Items</h3>
-        @for (item of order()!.orderItems; track item.id) {
-          <div class="order-item">
-            <span>{{ item.product?.name ?? 'Product' }}</span>
-            <span>{{ item.quantity }} × {{ item.priceAtPurchase | currency }}</span>
+      <div class="detail-card">
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{ formatDate(order()!.createdAt) }}</span>
+        </div>
+        @if (order()!.customer) {
+          <div class="detail-row">
+            <span class="detail-label">Customer</span>
+            <span class="detail-value">{{ order()!.customer?.name }}</span>
           </div>
         }
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-row">
+          <span class="detail-label">Subtotal</span>
+          <span class="detail-value">{{ order()!.subtotal | currency }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Discount</span>
+          <span class="detail-value">{{ order()!.discountAmount | currency }}</span>
+        </div>
+        <div class="detail-row detail-row--total">
+          <span class="detail-label">Total</span>
+          <span class="detail-value detail-value--primary">{{ order()!.totalAmount | currency }}</span>
+        </div>
+      </div>
+
+      @if (order()!.orderItems?.length) {
+        <div class="detail-card">
+          <h3>Items</h3>
+          @for (item of order()!.orderItems; track item.id) {
+            <div class="order-item">
+              <span class="item-name">{{ item.product?.name ?? 'Product' }}</span>
+              <span class="item-price">{{ item.quantity }} × {{ item.priceAtPurchase | currency }}</span>
+            </div>
+          }
+        </div>
       }
     </div>
   } @else {
-    <p>Loading...</p>
+    <div class="loading-state">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
   }
 </ion-content>

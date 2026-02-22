@@ -1,3 +1,87 @@
-ion-item[button] {
+.settings-content {
+  padding: 1.25rem;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--app-surface);
+  border-radius: 16px;
+  border: 1px solid var(--app-border);
+  margin-bottom: 1.5rem;
+
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--brand-primary), #8b5cf6);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .profile-info {
+    h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--app-text);
+      margin: 0 0 0.25rem;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: var(--app-text-secondary);
+      margin: 0;
+    }
+  }
+}
+
+.settings-group {
+  background: var(--app-surface);
+  border-radius: 16px;
+  border: 1px solid var(--app-border);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+
+  .settings-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--app-text);
+  }
+
+  ion-toggle {
+    --handle-background: white;
+    --track-background-checked: var(--brand-primary);
+  }
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ef4444;
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
   cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+
+  &:active {
+    background: rgba(239, 68, 68, 0.08);
+  }
 }

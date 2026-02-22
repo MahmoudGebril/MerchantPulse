@@ -41,7 +41,6 @@ import { gsap } from 'gsap';
     IonRefresher,
     IonRefresherContent,
     IonSpinner,
-    IonNote,
     RevenueChartComponent,
     OrdersChartComponent,
     TopProductsChartComponent,

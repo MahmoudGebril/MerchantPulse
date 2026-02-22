@@ -1,18 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonItem,
-  IonLabel,
   IonInput,
   IonButton,
   IonSpinner,
@@ -27,15 +19,6 @@ import { ThemeService } from '../../../theme/services/theme.service';
     CommonModule,
     FormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonItem,
-    IonLabel,
     IonInput,
     IonButton,
     IonSpinner,
@@ -47,6 +30,7 @@ export class LoginPage {
   private readonly auth = inject(AuthService);
   private readonly theme = inject(ThemeService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   email = '';
   password = '';
@@ -56,7 +40,7 @@ export class LoginPage {
   login(): void {
     this.error.set(null);
     this.loading.set(true);
-    this.auth.login(this.email, this.password).subscribe({
+    this.auth.login(this.email, this.password).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (data) => {
         if (data.user.store) {
           this.theme.applyStoreBrand({

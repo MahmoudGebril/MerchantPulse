@@ -1,18 +1,15 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
-  IonNote,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonBadge,
   IonSpinner,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../../services/api.service';
 import type { Order } from '../../../models';
 
@@ -26,18 +23,15 @@ import type { Order } from '../../../models';
     IonToolbar,
     IonTitle,
     IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonBadge,
     IonSpinner,
-    IonNote,
+    IonIcon,
   ],
   templateUrl: './orders-list.page.html',
   styleUrl: './orders-list.page.scss',
 })
 export class OrdersListPage {
   private readonly api = inject(ApiService);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly _orders = signal<Order[]>([]);
   private readonly _loading = signal(true);
@@ -48,7 +42,7 @@ export class OrdersListPage {
   readonly error = this._error.asReadonly();
 
   ngOnInit(): void {
-    this.api.getOrders().subscribe({
+    this.api.getOrders().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this._orders.set(res.data);
         this._loading.set(false);

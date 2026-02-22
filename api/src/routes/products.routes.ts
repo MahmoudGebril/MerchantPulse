@@ -28,8 +28,9 @@ productsRoutes.get('/', async (req: AuthRequest, res) => {
 
 productsRoutes.get('/:id', async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const product = await prisma.product.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
   });
   if (!product) {
     throw new AppError(404, 'Product not found');
@@ -51,15 +52,16 @@ productsRoutes.post('/', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest
 
 productsRoutes.patch('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const dto = updateProductSchema.parse(req.body);
   const product = await prisma.product.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
   });
   if (!product) {
     throw new AppError(404, 'Product not found');
   }
   const updated = await prisma.product.update({
-    where: { id: req.params.id },
+    where: { id },
     data: dto,
   });
   res.json({ success: true, data: updated });
@@ -67,14 +69,15 @@ productsRoutes.patch('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthReq
 
 productsRoutes.delete('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const product = await prisma.product.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
   });
   if (!product) {
     throw new AppError(404, 'Product not found');
   }
   await prisma.product.delete({
-    where: { id: req.params.id },
+    where: { id },
   });
   res.json({ success: true, message: 'Product deleted' });
 });

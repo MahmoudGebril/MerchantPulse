@@ -1,29 +1,38 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Orders</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (loading()) {
     <div class="loading-state">
       <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading orders...</p>
     </div>
   } @else if (error()) {
-    <ion-note color="danger">{{ error() }}</ion-note>
+    <div class="error-message">{{ error() }}</div>
   } @else if (orders().length === 0) {
-    <p>No orders yet.</p>
+    <div class="empty-state">
+      <div class="empty-icon">🧾</div>
+      <h3>No orders yet</h3>
+      <p>Orders will appear here once placed.</p>
+    </div>
   } @else {
-    <ion-list>
+    <div class="list-content">
       @for (o of orders(); track o.id) {
-        <ion-item [routerLink]="['/orders', o.id]">
-          <ion-label>
-            <h2>Order #{{ o.id.slice(0, 8) }}</h2>
-            <p>{{ formatDate(o.createdAt) }} · {{ o.totalAmount | currency }}</p>
-          </ion-label>
-          <ion-badge [color]="statusColor(o.status)" slot="end">{{ o.status }}</ion-badge>
-        </ion-item>
+        <a [routerLink]="['/orders', o.id]" class="order-card">
+          <div class="order-main">
+            <span class="order-id">#{{ o.id.slice(0, 8) }}</span>
+            <span class="order-status" [class]="'status-' + statusColor(o.status)">{{ o.status }}</span>
+          </div>
+          <div class="order-meta">
+            <span>{{ formatDate(o.createdAt) }}</span>
+            <span class="order-amount">{{ o.totalAmount | currency }}</span>
+          </div>
+          <ion-icon name="chevron-forward" class="order-arrow"></ion-icon>
+        </a>
       }
-    </ion-list>
+    </div>
   }
 </ion-content>

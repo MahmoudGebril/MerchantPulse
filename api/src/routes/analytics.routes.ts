@@ -104,13 +104,13 @@ analyticsRoutes.get('/dashboard', async (req: AuthRequest, res) => {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([date, revenue]) => ({ date, revenue }));
 
-  const productIds = topProducts.map((p) => p.productId);
+  const productIds = topProducts.map((p: { productId: string }) => p.productId);
   const products = await prisma.product.findMany({
     where: { id: { in: productIds } },
     select: { id: true, name: true },
   });
-  const productMap = new Map(products.map((p) => [p.id, p.name]));
-  const topProductsData = topProducts.map((p) => ({
+  const productMap = new Map(products.map((p: { id: string; name: string }) => [p.id, p.name]));
+  const topProductsData = topProducts.map((p: { productId: string; _sum: { quantity: number | null } }) => ({
     productId: p.productId,
     productName: productMap.get(p.productId) ?? 'Unknown',
     quantitySold: p._sum.quantity ?? 0,

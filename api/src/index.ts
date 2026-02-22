@@ -30,6 +30,10 @@ app.use('/api/orders', ordersRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/customers', customersRoutes);
 
+app.use((_req, res) => {
+  res.status(404).json({ success: false, error: 'Not found' });
+});
+
 app.use(errorHandler);
 
 app.listen(env.PORT, () => {

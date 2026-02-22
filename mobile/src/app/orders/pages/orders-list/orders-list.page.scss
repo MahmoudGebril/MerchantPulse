@@ -1,5 +1,106 @@
-.loading-state {
+.list-content {
+  padding: 1rem 1.25rem 2rem;
   display: flex;
-  justify-content: center;
-  padding: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.order-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--app-surface);
+  border-radius: 14px;
+  border: 1px solid var(--app-border);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.99);
+    background: var(--app-bg);
+  }
+
+  .order-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .order-id {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--app-text);
+  }
+
+  .order-status {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+
+    &.status-success {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+    }
+    &.status-primary {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--brand-primary);
+    }
+    &.status-warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+    &.status-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+    &.status-medium {
+      background: rgba(100, 116, 139, 0.15);
+      color: #94a3b8;
+    }
+  }
+
+  .order-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.125rem;
+
+    span {
+      font-size: 0.75rem;
+      color: var(--app-text-secondary);
+    }
+
+    .order-amount {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--app-text);
+    }
+  }
+
+  .order-arrow {
+    font-size: 1.25rem;
+    color: var(--app-text-secondary);
+    flex-shrink: 0;
+  }
+}
+
+.empty-state {
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--app-text);
+    margin: 0 0 0.25rem;
+  }
 }

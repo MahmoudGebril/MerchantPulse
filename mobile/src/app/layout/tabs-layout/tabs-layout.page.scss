@@ -2,14 +2,27 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--app-bg);
 }
 
 .tab-content {
   flex: 1;
   overflow: auto;
+  background: var(--app-bg);
 }
 
 ion-tab-bar {
-  --background: var(--ion-card-background);
-  flex-shrink: 0;
+  --background: var(--app-surface);
+  padding-top: 0.5rem;
+  min-height: 56px;
+}
+
+ion-tab-button {
+  ion-icon {
+    font-size: 1.5rem;
+  }
+
+  ion-label {
+    font-size: 0.6875rem;
+  }
 }

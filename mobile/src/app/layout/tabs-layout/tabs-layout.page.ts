@@ -6,29 +6,6 @@ import {
   IonIcon,
   IonLabel,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {
-  barChartOutline,
-  barChart,
-  cubeOutline,
-  cube,
-  receiptOutline,
-  receipt,
-  settingsOutline,
-  settings,
-} from 'ionicons/icons';
-
-addIcons({
-  'bar-chart-outline': barChartOutline,
-  'bar-chart': barChart,
-  'cube-outline': cubeOutline,
-  cube,
-  'receipt-outline': receiptOutline,
-  receipt,
-  'settings-outline': settingsOutline,
-  settings,
-});
-
 @Component({
   selector: 'app-tabs-layout',
   standalone: true,

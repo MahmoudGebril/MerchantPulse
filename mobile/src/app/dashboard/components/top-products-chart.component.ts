@@ -1,7 +1,9 @@
 import {
   Component,
+  DestroyRef,
   input,
   effect,
+  inject,
   OnDestroy,
   ViewChild,
   ElementRef,
@@ -23,13 +25,28 @@ export class TopProductsChartComponent implements OnDestroy {
   data = input<{ productName: string; quantitySold: number }[]>([]);
 
   private chart: Chart | null = null;
+  private destroyed = false;
+  private initTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    afterNextRender(() => this.initChart());
+    inject(DestroyRef).onDestroy(() => {
+      this.destroyed = true;
+      if (this.initTimeout) clearTimeout(this.initTimeout);
+      this.chart?.destroy();
+    });
+    afterNextRender(() => this.scheduleInit());
     effect(() => {
       this.data();
-      setTimeout(() => this.initChart(), 0);
+      this.scheduleInit();
     });
+  }
+
+  private scheduleInit(): void {
+    if (this.initTimeout) clearTimeout(this.initTimeout);
+    this.initTimeout = setTimeout(() => {
+      this.initTimeout = null;
+      if (!this.destroyed) this.initChart();
+    }, 0);
   }
 
   private initChart(): void {
@@ -73,5 +90,6 @@ export class TopProductsChartComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.chart?.destroy();
+    this.chart = null;
   }
 }

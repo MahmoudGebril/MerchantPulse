@@ -1,18 +1,99 @@
+.login-page {
+  --background: transparent;
+}
+
+.login-bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  z-index: 0;
+}
+
+.login-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+}
+
 .login-container {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100%;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .login-card {
-  max-width: 400px;
   width: 100%;
+  max-width: 400px;
+  background: var(--app-surface);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.error-message {
-  color: var(--ion-color-danger);
-  font-size: 0.9rem;
-  margin: 0.5rem 0 0;
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--brand-primary), #8b5cf6);
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--app-text);
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    font-size: 0.9375rem;
+    color: var(--app-text-secondary);
+    margin: 0;
+  }
+}
+
+.login-form {
+  .input-group {
+    margin-bottom: 1.25rem;
+
+    label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--app-text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    ion-input {
+      --background: var(--app-bg);
+      --border-radius: 10px;
+      --padding-start: 14px;
+      --padding-end: 14px;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      border-radius: 10px;
+    }
+  }
+
+  .submit-btn {
+    --background: linear-gradient(135deg, var(--brand-primary), #8b5cf6);
+    --background-activated: linear-gradient(135deg, #4f46e5, #7c3aed);
+    --background-hover: linear-gradient(135deg, #5558e3, #8b5cf6);
+    --background-focused: linear-gradient(135deg, #5558e3, #8b5cf6);
+    --border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    height: 48px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  }
 }

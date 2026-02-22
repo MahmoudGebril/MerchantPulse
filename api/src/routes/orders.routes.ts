@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import type { OrderStatus } from '@prisma/client';
 import { prisma } from '../lib/prisma.js';
 import { authMiddleware, requireRole, type AuthRequest } from '../middleware/auth.js';
 import { createOrderSchema, updateOrderSchema } from '../dto/order.dto.js';
@@ -19,9 +20,9 @@ function getStoreId(req: AuthRequest): string {
 
 ordersRoutes.get('/', async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
-  const status = req.query.status as string | undefined;
-  const where: { storeId: string; status?: string } = { storeId };
-  if (status) where.status = status;
+  const status = req.query.status;
+  const statusVal = typeof status === 'string' ? (status as OrderStatus) : undefined;
+  const where = statusVal ? { storeId, status: statusVal } : { storeId };
 
   const orders = await prisma.order.findMany({
     where,
@@ -37,8 +38,9 @@ ordersRoutes.get('/', async (req: AuthRequest, res) => {
 
 ordersRoutes.get('/:id', async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const order = await prisma.order.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
     include: {
       customer: true,
       orderItems: { include: { product: true } },
@@ -61,7 +63,7 @@ ordersRoutes.post('/', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, 
     throw new AppError(404, 'Customer not found');
   }
 
-  const order = await prisma.$transaction(async (tx) => {
+  const order = await prisma.$transaction(async (tx: import('@prisma/client').Prisma.TransactionClient) => {
     const order = await tx.order.create({
       data: {
         storeId,
@@ -94,15 +96,16 @@ ordersRoutes.post('/', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, 
 
 ordersRoutes.patch('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const dto = updateOrderSchema.parse(req.body);
   const order = await prisma.order.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
   });
   if (!order) {
     throw new AppError(404, 'Order not found');
   }
   const updated = await prisma.order.update({
-    where: { id: req.params.id },
+    where: { id },
     data: dto,
     include: {
       customer: true,
@@ -114,14 +117,15 @@ ordersRoutes.patch('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthReque
 
 ordersRoutes.delete('/:id', requireRole('ADMIN', 'SELLER'), async (req: AuthRequest, res) => {
   const storeId = getStoreId(req);
+  const id = String(req.params.id);
   const order = await prisma.order.findFirst({
-    where: { id: req.params.id, storeId },
+    where: { id, storeId },
   });
   if (!order) {
     throw new AppError(404, 'Order not found');
   }
   await prisma.order.delete({
-    where: { id: req.params.id },
+    where: { id },
   });
   res.json({ success: true, message: 'Order deleted' });
 });

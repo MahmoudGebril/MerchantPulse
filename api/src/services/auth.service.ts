@@ -60,8 +60,8 @@ export async function login(email: string, password: string) {
   };
 
   const token = jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN,
-  });
+    expiresIn: env.JWT_EXPIRES_IN as string,
+  } as jwt.SignOptions);
 
   return {
     token,

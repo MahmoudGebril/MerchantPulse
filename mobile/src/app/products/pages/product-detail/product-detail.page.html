@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/products"></ion-back-button>
@@ -7,18 +7,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (product()) {
-    <div class="product-detail">
-      <h1>{{ product()!.name }}</h1>
-      <p class="category">{{ product()!.category }}</p>
-      <p class="price">{{ product()!.price | currency }}</p>
+    <div class="detail-content">
+      <div class="detail-hero">
+        <div class="detail-avatar">{{ product()!.name.charAt(0) }}</div>
+        <h1>{{ product()!.name }}</h1>
+        <span class="detail-badge">{{ product()!.category }}</span>
+      </div>
+      <div class="detail-card">
+        <div class="detail-row">
+          <span class="detail-label">Price</span>
+          <span class="detail-value detail-value--primary">{{ product()!.price | currency }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Stock</span>
+          <span class="detail-value">{{ product()!.stockQuantity }}</span>
+        </div>
+      </div>
       @if (product()!.description) {
-        <p class="description">{{ product()!.description }}</p>
+        <div class="detail-card">
+          <h3>Description</h3>
+          <p>{{ product()!.description }}</p>
+        </div>
       }
-      <p>Stock: {{ product()!.stockQuantity }}</p>
     </div>
   } @else {
-    <p>Loading...</p>
+    <div class="loading-state">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
   }
 </ion-content>

@@ -1,23 +1,87 @@
-.product-detail {
+.detail-content {
+  padding: 1.25rem;
+}
+
+.detail-hero {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  .detail-avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--brand-primary), #8b5cf6);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 2rem;
+    color: white;
+  }
+
   h1 {
     font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--app-text);
     margin: 0 0 0.5rem;
   }
 
-  .category {
-    color: var(--ion-color-medium);
-    margin: 0 0 0.5rem;
+  .detail-badge {
+    font-size: 0.8125rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--app-bg);
+    border-radius: 8px;
+    color: var(--app-text-secondary);
   }
+}
 
-  .price {
-    font-size: 1.25rem;
+.detail-card {
+  background: var(--app-surface);
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1px solid var(--app-border);
+  margin-bottom: 1rem;
+
+  h3 {
+    font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--brand-primary);
-    margin: 0 0 1rem;
+    color: var(--app-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.75rem;
   }
 
-  .description {
-    margin: 0 0 1rem;
-    line-height: 1.5;
+  p {
+    font-size: 0.9375rem;
+    color: var(--app-text);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--app-border);
+  }
+
+  .detail-label {
+    font-size: 0.9375rem;
+    color: var(--app-text-secondary);
+  }
+
+  .detail-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--app-text);
+
+    &--primary {
+      color: var(--brand-primary);
+    }
   }
 }
