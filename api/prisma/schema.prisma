@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  storeId      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
+}
+
+enum UserRole {
+  ADMIN
+  SELLER
+  VIEWER
+}
+
+model Store {
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  brandPrimaryColor String  @default("#4F46E5")
+  brandLogoUrl     String?
+  currency         String   @default("USD")
+  timezone         String   @default("UTC")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  users     User[]
+  products  Product[]
+  customers Customer[]
+  orders    Order[]
+  dailyMetrics DailyMetric[]
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  storeId       String
+  name          String
+  description   String?
+  category      String
+  price         Decimal  @db.Decimal(12, 2)
+  costPrice     Decimal? @db.Decimal(12, 2)
+  stockQuantity Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+}
+
+model Customer {
+  id      String   @id @default(uuid())
+  storeId String
+  name    String
+  email   String?
+  phone   String?
+  createdAt DateTime @default(now())
+
+  store  Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  orders Order[]
+}
+
+model Order {
+  id             String    @id @default(uuid())
+  storeId        String
+  customerId     String
+  status         OrderStatus
+  subtotal       Decimal   @db.Decimal(12, 2)
+  discountAmount Decimal   @default(0) @db.Decimal(12, 2)
+  totalAmount    Decimal   @db.Decimal(12, 2)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  CANCELLED
+  ABANDONED
+}
+
+model OrderItem {
+  id             String   @id @default(uuid())
+  orderId        String
+  productId      String
+  quantity       Int
+  priceAtPurchase Decimal @db.Decimal(12, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model DailyMetric {
+  id             String   @id @default(uuid())
+  storeId        String
+  date           DateTime @db.Date
+  totalOrders    Int      @default(0)
+  totalRevenue   Decimal  @default(0) @db.Decimal(12, 2)
+  abandonedCarts Int      @default(0)
+  conversionRate Decimal  @default(0) @db.Decimal(5, 2)
+  createdAt      DateTime @default(now())
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, date])
+  @@index([storeId])
+  @@index([date])
+}

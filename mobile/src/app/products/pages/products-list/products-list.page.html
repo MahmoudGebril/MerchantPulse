@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="loading-state">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (error()) {
+    <ion-note color="danger">{{ error() }}</ion-note>
+  } @else if (products().length === 0) {
+    <p>No products yet.</p>
+  } @else {
+    <ion-list>
+      @for (p of products(); track p.id) {
+        <ion-item [routerLink]="['/products', p.id]">
+          <ion-label>
+            <h2>{{ p.name }}</h2>
+            <p>{{ p.category }} · {{ p.price | currency }}</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>

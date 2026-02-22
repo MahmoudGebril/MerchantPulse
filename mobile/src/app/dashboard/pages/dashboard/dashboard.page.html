@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ storeName() }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="dashboard-content ion-padding">
+    @if (error()) {
+      <ion-note color="danger">{{ error() }}</ion-note>
+    }
+
+    @if (loading() && !totalRevenue()) {
+      <div class="loading-state">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading analytics...</p>
+      </div>
+    } @else {
+      <div #kpiCards class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Total Revenue</span>
+          <span class="kpi-value">{{ revenueFormatted() }}</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Orders Today</span>
+          <span class="kpi-value">{{ ordersToday() }}</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Conversion Rate</span>
+          <span class="kpi-value">{{ conversionRate() | number:'1.1-1' }}%</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Abandoned Cart %</span>
+          <span class="kpi-value">{{ abandonedCartPercent() | number:'1.1-1' }}%</span>
+        </div>
+      </div>
+
+      @if (revenueTrend().length) {
+        <div class="chart-section">
+          <h3>Revenue Trend</h3>
+          <app-revenue-chart [data]="revenueTrend()"></app-revenue-chart>
+        </div>
+      }
+
+      @if (ordersPerDay().length) {
+        <div class="chart-section">
+          <h3>Orders per Day</h3>
+          <app-orders-chart [data]="ordersPerDay()"></app-orders-chart>
+        </div>
+      }
+
+      @if (topProducts().length) {
+        <div class="chart-section">
+          <h3>Top Products</h3>
+          <app-top-products-chart [data]="topProducts()"></app-top-products-chart>
+        </div>
+      }
+    }
+  </div>
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/orders"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (order()) {
+    <div class="order-detail">
+      <p><strong>Status:</strong> {{ order()!.status }}</p>
+      <p><strong>Date:</strong> {{ formatDate(order()!.createdAt) }}</p>
+      @if (order()!.customer) {
+        <p><strong>Customer:</strong> {{ order()!.customer?.name }}</p>
+      }
+      <p><strong>Subtotal:</strong> {{ order()!.subtotal | currency }}</p>
+      <p><strong>Discount:</strong> {{ order()!.discountAmount | currency }}</p>
+      <p><strong>Total:</strong> {{ order()!.totalAmount | currency }}</p>
+
+      @if (order()!.orderItems?.length) {
+        <h3>Items</h3>
+        @for (item of order()!.orderItems; track item.id) {
+          <div class="order-item">
+            <span>{{ item.product?.name ?? 'Product' }}</span>
+            <span>{{ item.quantity }} × {{ item.priceAtPurchase | currency }}</span>
+          </div>
+        }
+      }
+    </div>
+  } @else {
+    <p>Loading...</p>
+  }
+</ion-content>

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="loading-state">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (error()) {
+    <ion-note color="danger">{{ error() }}</ion-note>
+  } @else if (orders().length === 0) {
+    <p>No orders yet.</p>
+  } @else {
+    <ion-list>
+      @for (o of orders(); track o.id) {
+        <ion-item [routerLink]="['/orders', o.id]">
+          <ion-label>
+            <h2>Order #{{ o.id.slice(0, 8) }}</h2>
+            <p>{{ formatDate(o.createdAt) }} · {{ o.totalAmount | currency }}</p>
+          </ion-label>
+          <ion-badge [color]="statusColor(o.status)" slot="end">{{ o.status }}</ion-badge>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>

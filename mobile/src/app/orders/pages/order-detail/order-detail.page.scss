@@ -1,0 +1,17 @@
+.order-detail {
+  p {
+    margin: 0 0 0.5rem;
+  }
+
+  h3 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--ion-color-light);
+  }
+}
